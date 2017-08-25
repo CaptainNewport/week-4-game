@@ -1,0 +1,24 @@
+p {
+	color: blue;
+	line-height: 1.8;
+
+}
+p.stats{
+	color: red;
+
+}
+
+h1{
+	color: green;
+	font-size: 30px;
+
+}
+
+.crystal-image {
+    width: 100px;
+    height: 100px;
+}
+
+body {
+	background: lightgrey;
+}

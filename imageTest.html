@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Crystal Collector</title>
+  <link rel="stylesheet" type="text/css" href="reset.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+
+  
+  <style type="text/css">
+
+    .crystal-image {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+
+</head>
+<body>
+
+
+  <p>Want to play a game?</p>
+
+  <p>You will be given a random number.</p>
+
+
+  <p>Each of the crystals represent a different random number and your objective is to click on them and have them add up to the random number provided.</p>
+
+
+  <p>If you click a total that is higher, you lose and Ganondorf or Team Rocket wins or something. Only 90's kids will understand.</p>
+  <h1>Number to Guess: <span id="number-to-guess"></span></h1>
+  <p class="stats">Wins: <span id="wins"></span> </p>
+  <p class="stats">Losses: <span id="losses"></span> </p>
+  <p class="stats">Counter: <span id="counter"></span> </p>
+
+
+  <div id="crystals">
+  </div>
+
+  <!-- JAVASCRIPT  -->
+  <!-- ========================================= -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <script type="text/javascript">
+
+
+  // Assigns starting values of 0 to values
+
+  var counter = 0;
+  var wins = 0;
+  var losses = 0;
+
+
+
+  $(document).ready(function() {
+
+
+//Cole helped me with this, created a function to get an array to make easier to call later. Did not do with the target number.
+
+var randomCrystalNumber = function() {
+  var newNumberOptions = [];
+  for (var i=0; i<4; i++) { 
+    newNumberOptions.push(Math.ceil(Math.random() * 12)) 
+  }
+  console.log(newNumberOptions);
+  return newNumberOptions;
+}
+var numberOptions = randomCrystalNumber()
+
+   
+
+//variable and function to make and later change target number randomly
+
+  var targetNumber= Math.floor(Math.random()*120);
+  if (targetNumber<19) 
+  {
+    targetNumber= targetNumber+19;
+  }
+
+  // Assigns starting values of 0 to HTML text
+
+
+  $("#number-to-guess").text(targetNumber);
+  $("#wins").text(wins);
+  $("#losses").text(losses);
+  $("#counter").text(counter);
+
+
+
+
+
+
+
+  //adds img element to crystals
+
+    var imageCrystal1 = $("<img>");
+    var imageCrystal2 = $("<img>");
+    var imageCrystal3 = $("<img>");
+    var imageCrystal4 = $("<img>");
+
+    //adds class to the crystals for manipulation by JavaScript
+
+
+    imageCrystal1.addClass("crystal-image");
+    imageCrystal2.addClass("crystal-image");
+    imageCrystal3.addClass("crystal-image");
+    imageCrystal4.addClass("crystal-image");
+
+    //pulls the images added, sweet sweet crystals
+
+    imageCrystal1.attr("src", "Kokiri_Emerald.jpg");
+    imageCrystal2.attr("src", "Goron_Ruby.jpg");
+    imageCrystal3.attr("src", "Zora_Sapphire.jpg");
+    imageCrystal4.attr("src", "pokemonCrystal.jpg");
+
+  
+    //pulls from the array random numbers for each crystal
+
+    imageCrystal1.attr("data-crystalvalue", numberOptions[0]); 
+    imageCrystal2.attr("data-crystalvalue", numberOptions[1]); 
+    imageCrystal3.attr("data-crystalvalue", numberOptions[2]);
+    imageCrystal4.attr("data-crystalvalue", numberOptions[3]);
+   
+    //Adds crystals to page.
+
+    $("#crystals").append(imageCrystal1);
+    $("#crystals").append(imageCrystal2);
+    $("#crystals").append(imageCrystal3);
+    $("#crystals").append(imageCrystal4);
+
+
+   
+
+
+   $(".crystal-image").on("click", function() {
+        console.log($(this).attr("data-crystalvalue"));
+
+
+    //Part used for ensuring that the counter adds based off of the value of the crystal clicked.
+    
+    var crystalValue = ($(this).attr("data-crystalvalue"));
+    crystalValue = parseInt(crystalValue);
+
+    counter += crystalValue;
+
+    console.log("New Count: " + counter);
+
+    // Conditional for the win, resets in a very long hand way the target number, the arrays values, and adds to the win counts. Added the assigner lines to reset the html output.
+
+    if (counter === targetNumber) {
+      wins++;
+      $("#wins").text(wins);
+      counter = 0;
+      numberOptions = randomCrystalNumber();
+      targetNumber= Math.floor(Math.random()*120);
+
+      if (targetNumber<19) 
+      {
+          targetNumber= targetNumber+19;
+      }
+
+       $("#number-to-guess").text(targetNumber);
+
+
+      imageCrystal1.attr("data-crystalvalue", numberOptions[0]); 
+      imageCrystal2.attr("data-crystalvalue", numberOptions[1]); 
+      imageCrystal3.attr("data-crystalvalue", numberOptions[2]);
+      imageCrystal4.attr("data-crystalvalue", numberOptions[3]);
+
+    }
+  // Conditional for the loss, resets in a very long hand way the target number, the arrays values, and adds to the loss counts. Added the assigner lines to reset the html output.
+
+    else if (counter >= targetNumber) {
+
+      losses++;
+      $("#losses").text(losses);
+      counter = 0;
+      targetNumber= Math.floor(Math.random()*120);
+
+      if (targetNumber<19) 
+      {
+          targetNumber= targetNumber+19;
+      }
+      $("#number-to-guess").text(targetNumber);
+
+      numberOptions = randomCrystalNumber();
+      imageCrystal1.attr("data-crystalvalue", numberOptions[0]); 
+      imageCrystal2.attr("data-crystalvalue", numberOptions[1]); 
+      imageCrystal3.attr("data-crystalvalue", numberOptions[2]);
+      imageCrystal4.attr("data-crystalvalue", numberOptions[3]);
+
+
+    }   
+
+    //resets the counter within the round dynamically on the html text
+    $("#counter").text(counter);
+
+
+});
+
+  
+
+});
+  
+
+  </script>
+</body>
+</html>
